@@ -23,16 +23,17 @@ class OptimizationModel(pyo.ConcreteModel):
         self.T = pyo.Set(initialize=range(13), doc='Time periods')
 
     def set_variables(self):
-        self.p = pyo.Var(self.T, domain=pyo.NonNegativeReals, doc='Production amount')
-        self.delta = pyo.Var(self.T, domain=pyo.Binary, doc='Production decision')
+        self.p = pyo.Var(self.T, domain=pyo.NonNegativeReals, doc='Production amount', initialize=0)
+        # self.delta = pyo.Var(self.T, domain=pyo.NonNegativeReals, doc='Production decision')
 
     def set_parameters(self):
         self.xi = self.compute_xi()
         self.v = self.compute_consumption_rate()
+        self.delta = [1 for _ in range(self.Pmax)] + [0 for _ in range(self.Pmax, 13)]
 
     def set_constraints(self):
         self.set_inventory_constraint()
-        self.set_order_constraint()
+        # self.set_order_constraint()
 
     def set_inventory_constraint(self):
         self.set_nonegative_inventory_constraint()
@@ -40,7 +41,9 @@ class OptimizationModel(pyo.ConcreteModel):
         self.set_sufficient_inventory_constraint()
 
     def inventory(self, t):
-        return sum(self.delta[i] * self.p[i] - self.v[i] for i in range(t-1))
+        if t == 0:
+            return 0
+        return sum(self.delta[i] * self.p[i] - self.v[i] for i in range(t-1)) + self.delta[t-1] * self.p[t-1]
 
     def set_nonegative_inventory_constraint(self):
         def rule(model, t):
@@ -51,12 +54,16 @@ class OptimizationModel(pyo.ConcreteModel):
 
     def set_max_inventory_constraint(self):
         def rule(model, t):
+            if t == 0:
+                return pyo.Constraint.Skip
             return model.inventory(t) <= self.Cmax
         self.max_inventory_constraint = pyo.Constraint(self.T, rule=rule, doc='Maximum inventory constraint')
 
     def set_sufficient_inventory_constraint(self):
         def rule(model, t):
-            return sum(model.delta[i] * model.p[i] for i in range(t-1)) >= sum(model.xi[i] for i in range(t-1)) * model.beta
+            if t == 0:
+                return pyo.Constraint.Skip
+            return sum(model.delta[i] * model.p[i] for i in range(t)) >= sum(model.xi[i] for i in range(t)) * model.beta
         self.sufficient_inventory_constraint = pyo.Constraint(self.T, rule=rule, doc='Sufficient inventory constraint')
 
     def set_order_constraint(self):
@@ -66,7 +73,7 @@ class OptimizationModel(pyo.ConcreteModel):
 
     def set_objective(self):
         def rule(model):
-            return sum(model.inventory(t) for t in self.T) * self.C * self.gamma
+            return sum(model.inventory(t) for t in model.T) *  model.C * model.gamma
         self.objective = pyo.Objective(rule=rule, sense=pyo.minimize, doc='Total cost')
 
     def compute_xi(self):
