@@ -1,9 +1,10 @@
-from pyomo_model import PartialModel
+from .pyomo_model import PartialModel
 from itertools import combinations
 from pyomo.environ import value
 import pyomo.environ as pyo
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 
 class OptimizationModel:
@@ -46,14 +47,24 @@ class OptimizationModel:
         ]
 
     def solve(self, solver_path):
-        for model in self.model_list:
-            opt = pyo.SolverFactory("glpk", executable=solver_path)
-            opt.solve(model)
+        feaseable_models = []
+        with tqdm(total=len(self.model_list)) as pbar:
+            for i, model in enumerate(self.model_list):
+                opt = pyo.SolverFactory("glpk", executable=solver_path)
+                result = opt.solve(model)
+                if (result.solver.status == pyo.SolverStatus.ok and 
+                    result.solver.termination_condition == pyo.TerminationCondition.optimal
+                ):
+                    feaseable_models.append(model)
+                pbar.update(1)
 
-        model = self.get_optimal_model()
-        return model
+        if feaseable_models:
+            return self.get_optimal_model(feaseable_models)
 
-    def get_optimal_model(self):
-        return self.model_list[
-            np.argmin([value(model.objective()) for model in self.model_list])
-        ]
+    @staticmethod
+    def get_optimal_model(feaseable_models):
+        index_best_model = np.argmin(
+            [value(model.objective()) for model in feaseable_models]
+        )
+        return feaseable_models[index_best_model]
+    
