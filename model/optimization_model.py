@@ -29,7 +29,7 @@ class OptimizationModel:
         COMBINATIONS = np.array(
             [
                 [1 if i in comb else 0 for i in range(12)]
-                for comb in combinations(np.arange(12), self.model.Pmax)
+                for comb in combinations(np.arange(12), self.Pmax)
             ]
         )
         self.model_list = [

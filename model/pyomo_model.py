@@ -111,30 +111,27 @@ class PartialModel(pyo.ConcreteModel):
 
         # Select useful columns
         data = self.generate_date_features(data)
-        data = data[["CODIGO", "YEAR", "MONTH", "CANTIDADCOMPRA"]]
+        data = data[["YEAR", "MONTH", "CANTIDADCOMPRA"]]
 
         # Select dates 2023
         data = data.loc[data["YEAR"] == 2023]
 
         # Create dataframe with xi values
-        data_xi = data.groupby(["CODIGO", "MONTH"]).CANTIDADCOMPRA.sum().reset_index()
-        data_xi = data_xi.sort_values(["CODIGO", "MONTH"], ascending=[True, True])
+        data_xi = data.groupby(["MONTH"]).CANTIDADCOMPRA.sum().reset_index()
+        data_xi = data_xi.sort_values(["MONTH"], ascending=[True, True])
 
         return data_xi["CANTIDADCOMPRA"].tolist()
 
     def compute_consumption_rate(self):
-        velocity = self.xi.copy()
-        velocity["VELOCITY"] = 0
-        for i in range(0, len(velocity)):
-            if (i + 1 < len(velocity)) and (
-                velocity.iloc[i, 0] == velocity.iloc[i + 1, 0]
-            ):
-                velocity.iloc[i, 3] = velocity.iloc[i, 2] / (
+        velocity = [i for i in range(13)]
+        for i in range(len(velocity)):
+            if (i + 1 < len(velocity)) and (self.xi[i] == self.xi[i + 1]):
+                velocity[i] = self.xi[i] / (
                     velocity.iloc[i + 1, 1] - velocity.iloc[i, 1]
                 )
             else:
                 velocity.iloc[i, 3] = velocity.iloc[i, 2] / (13 - velocity.iloc[i, 1])
-        return velocity["VELOCITY"].tolist()
+        return velocity
 
     @staticmethod
     def generate_date_features(data):
