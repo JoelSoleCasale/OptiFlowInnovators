@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import datetime
 
-DATA_PATH = "../data"
+DATA_PATH = "data"
 
 
 # basic date features
@@ -33,7 +33,15 @@ df = df.loc[df["YEAR"] == 2023]
 
 # Create dataframe with xi values
 df_xi_velocity = df.groupby(["CODIGO", "MONTH"]).CANTIDADCOMPRA.sum().reset_index()
+
+unique_codes = df_xi_velocity["CODIGO"].unique()
+for un in unique_codes:
+    for m in range(1,13):
+        if(df_xi_velocity.loc[(df_xi_velocity["CODIGO"] == un) & (df_xi_velocity["MONTH"] == m)].empty):
+            df_xi_velocity.loc[len(df_xi_velocity)] = [un, m, 0]
+
 df_xi_velocity = df_xi_velocity.sort_values(["CODIGO", "MONTH"], ascending=[True, True])
+print(df_xi_velocity.head(13))
 
 # Compute velocity of consumption for each product at each time
 df_xi_velocity["VELOCITY"] = 0
@@ -49,5 +57,14 @@ for i in range(0, len(df_xi_velocity)):
             13 - df_xi_velocity.iloc[i, 1]
         )
 
-# Print results
-print(df_xi_velocity.head())
+unique_codes = df_xi_velocity["CODIGO"].unique()
+for un in unique_codes:
+    for m in range(1,13):
+        if(df_xi_velocity.loc[(df_xi_velocity["CODIGO"] == un) & (df_xi_velocity["MONTH"] == m) & (df_xi_velocity["CANTIDADCOMPRA"] != 0)].empty):
+            if(m != 1): 
+                df_xi_velocity.loc[(df_xi_velocity["CODIGO"] == un) & (df_xi_velocity["MONTH"] == m)] = [un, m, 0, df_xi_velocity.loc[(df_xi_velocity["CODIGO"] == un) & (df_xi_velocity["MONTH"] == m-1)].iloc[0,3]]
+            else:
+                df_xi_velocity.loc[(df_xi_velocity["CODIGO"] == un) & (df_xi_velocity["MONTH"] == m)] = [un, m, 0, 0]
+
+df_xi_velocity = df_xi_velocity.sort_values(["CODIGO", "MONTH"], ascending=[True, True])
+print(df_xi_velocity.head(25))

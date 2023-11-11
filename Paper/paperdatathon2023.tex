@@ -1,0 +1,397 @@
+\documentclass[a4paper]{article}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage[framemethod=TikZ]{mdframed}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{amsmath, amssymb}
+\usepackage{mdframed}
+\usepackage{pgfplots}
+\usepackage{import}
+\usepackage{mathrsfs}
+\usepackage{xifthen}
+\usepackage{float}
+\usepackage{nicematrix}
+\usepackage{pdfpages}
+\usepackage{tcolorbox}
+\usepackage{transparent}
+\pgfplotsset{compat=1.18}
+\usepackage{tikz}
+\usepackage[left=1cm, right=1cm, top=2cm, bottom=2cm]{geometry}
+
+\newcommand\Warning{%
+ \makebox[1em][c]{%
+ \makebox[0pt][c]{\raisebox{.1em}{\small!}}%
+ \makebox[0pt][c]{\color{red}\Large$\bigtriangleup$}}}%
+
+
+
+%Theorem
+\usepackage{amsthm}
+
+\makeatother
+\usepackage{thmtools}
+\usepackage[framemethod=TikZ]{mdframed}
+\mdfsetup{skipabove=1em,skipbelow=0em}
+
+
+\theoremstyle{definition}
+
+
+\declaretheoremstyle[
+    headfont=\bfseries\sffamily\color{BrickRed!70!black}, bodyfont=\normalfont,
+    mdframed={
+        linewidth=2pt,
+        rightline=false, topline=false, bottomline=false,
+        linecolor=BrickRed, backgroundcolor=BrickRed!20,
+    }
+]{thmreallyredbox}
+
+\declaretheoremstyle[
+    headfont=\bfseries\sffamily\color{ForestGreen!70!black}, bodyfont=\normalfont,
+    mdframed={
+        linewidth=2pt,
+        rightline=false, topline=false, bottomline=false,
+        linecolor=ForestGreen, backgroundcolor=ForestGreen!3,
+    }
+]{thmgreenbox}
+
+
+\declaretheoremstyle[
+    headfont=\bfseries\sffamily\color{Fuchsia!70!black}, bodyfont=\normalfont,
+    mdframed={
+        linewidth=2pt,
+        rightline=false, topline=false, bottomline=false,
+        linecolor=Fuchsia, backgroundcolor=Fuchsia!5,
+    }
+]{thmfuchsiabox}
+
+\declaretheoremstyle[
+    headfont=\bfseries\sffamily\color{NavyBlue!70!black}, bodyfont=\normalfont,
+    mdframed={
+        linewidth=2pt,
+        rightline=false, topline=false, bottomline=false,
+        linecolor=NavyBlue, backgroundcolor=NavyBlue!5,
+    }
+]{thmbluebox}
+
+\declaretheoremstyle[
+    headfont=\bfseries\sffamily\color{NavyBlue!70!black}, bodyfont=\normalfont,
+    mdframed={
+        linewidth=2pt,
+        rightline=false, topline=false, bottomline=false,
+        linecolor=NavyBlue
+    }
+]{thmblueline}
+
+\declaretheoremstyle[
+    headfont=\bfseries\sffamily\color{RawSienna!70!black}, bodyfont=\normalfont,
+    mdframed={
+        linewidth=2pt,
+        rightline=false, topline=false, bottomline=false,
+        linecolor=RawSienna, backgroundcolor=RawSienna!5,
+    }
+]{thmredbox}
+
+\declaretheoremstyle[
+    headfont=\bfseries\sffamily\color{RawSienna!70!black}, bodyfont=\normalfont,
+    numbered=no,
+    mdframed={
+        linewidth=2pt,
+        rightline=false, topline=false, bottomline=false,
+        linecolor=RawSienna, backgroundcolor=RawSienna!2,
+} 
+]{thmproofbox}
+
+\declaretheoremstyle[
+    headfont=\bfseries\sffamily\color{NavyBlue!70!black}, bodyfont=\normalfont,
+    numbered=no,
+    mdframed={
+        linewidth=2pt,
+        rightline=false, topline=false, bottomline=false,
+        linecolor=NavyBlue, backgroundcolor=NavyBlue!2,
+    },
+]{thmexplanationbox}
+
+
+\declaretheorem[style=thmfuchsiabox, name=Definition]{definition}
+\declaretheorem[style=thmbluebox, numbered=no, name=Example]{eg}
+\declaretheorem[style=thmredbox, name=Proposition]{prop}
+\declaretheorem[style=thmredbox, name=Theorem]{theorem}
+\declaretheorem[style=thmredbox, name=Lemma]{lemma}
+\declaretheorem[style=thmredbox, numbered=no, name=Corollary]{corollary}
+
+\declaretheorem[style=thmproofbox, name=Proof]{replacementproof}
+\renewenvironment{proof}[1][\proofname]{\vspace{-10pt}\begin{replacementproof}}{\end{replacementproof}}
+
+
+\declaretheorem[style=thmexplanationbox, name=Explanation]{tmpexplanation}
+\newenvironment{explanation}[1][]{\vspace{-10pt}\begin{tmpexplanation}}{\end{tmpexplanation}}
+
+\declaretheorem[style=thmreallyredbox, numbered=no, name=\Warning$\text{ }$Remark \Warning]{remark}
+\declaretheorem[style=thmgreenbox, numbered=no, name=Note]{note}
+
+\newtheorem*{uovt}{UOVT}
+\newtheorem*{notation}{Notation}
+\newtheorem*{previouslyseen}{As previously seen}
+\newtheorem*{problem}{Problem}
+\newtheorem*{observe}{Observe}
+\newtheorem*{property}{Property}
+\newtheorem*{intuition}{Intuition}
+
+
+\usepackage{etoolbox}
+\AtEndEnvironment{vb}{\null\hfill$\diamond$}%
+\AtEndEnvironment{intermezzo}{\null\hfill$\diamond$}%
+% \AtEndEnvironment{opmerking}{\null\hfill$\diamond$}%
+
+% http://tex.stackexchange.com/questions/22119/how-can-i-change-the-spacing-before-theorems-with-amsthm
+\makeatletter
+% \def\thm@space@setup{%
+%   \thm@preskip=\parskip \thm@postskip=0pt
+% }
+
+\newcommand{\oefening}[1]{%
+    \def\@oefening{#1}%
+    \subsection*{Oefening #1}
+}
+
+\newcommand{\suboefening}[1]{%
+    \subsubsection*{Oefening \@oefening.#1}
+}
+
+\newcommand{\exercise}[1]{%
+    \def\@exercise{#1}%
+    \subsection*{Exercise #1}
+}
+
+\newcommand{\subexercise}[1]{%
+    \subsubsection*{Exercise \@exercise.#1}
+}
+
+
+\usepackage{xifthen}
+
+\def\testdateparts#1{\dateparts#1\relax}
+\def\dateparts#1 #2 #3 #4 #5\relax{
+    \marginpar{\small\textsf{\mbox{#1 #2 #3 #5}}}
+}
+
+\def\@lesson{}%
+\newcommand{\lesson}[3]{
+    \ifthenelse{\isempty{#3}}{%
+        \def\@lesson{Lecture #1}%
+    }{%
+        \def\@lesson{Lecture #1: #3}%
+    }%
+    \subsection*{\@lesson}
+    \testdateparts{#2}
+}
+
+% \renewcommand\date[1]{\marginpar{#1}}
+
+
+\makeatother
+
+
+
+
+
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\usepackage{collectbox}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\pdfminorversion=7
+\usepackage{fancyhdr}
+
+
+
+\newcommand{\incfig}[2][1]{%
+    \def\svgwidth{#1\columnwidth}
+    \import{./figures/}{#2.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{NTT data}
+\lhead{Datathon 2023}
+\rfoot{Page \thepage}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\def\undertilde#1{\mathord{\vtop{\ialign{##\crcr
+$\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
+$\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
+
+
+\newcommand{\mybox}{%
+    \collectbox{%
+        \setlength{\fboxsep}{1pt}%
+        \fbox{\BOXCONTENT}%
+    }%
+}
+
+\setlength\parindent{0pt}
+
+\pdfsuppresswarningpagegroup=1
+
+\title{Datathon 2023}
+\author{NTT data}
+\date{November 2023}
+
+\begin{document}
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\definecolor{ududff}{rgb}{0.30196078431372547,0.30196078431372547,1.}
+\maketitle
+
+\newpage
+\tableofcontents
+
+
+\newpage
+\section{Supositions}
+\begin{itemize}
+	\item Price of product in year $n$ is last year's price multiplied by a ratio  $\gamma$ (inflation)
+	\item Central storage center that supplies all hospitals (stores their "almacenable" products)
+	\item Environtmental cost \quad $\propto$ \quad $\#$orders
+	\item Unlimited transit (limited indirectly by  maximum capacity of storage center) 
+	\item Products are distributed to hospitals in a uniform way (\underline{Not exactly: elaborate later})
+	\item Mensual orders
+\end{itemize}
+
+\section{Extras}
+\begin{itemize}
+	\item For products of "transito" we group them by day manually
+\end{itemize}
+
+
+
+\newpage
+\section{Parameters}
+
+\begin{note}
+Vamos a agrupar las compras de todos los hospitales en una única compra centralizada
+\end{note}
+
+\vspace{5mm}
+
+Initial definition:
+\begin{itemize}
+	\item $I = \left\{ \text{index of product} \right\} $ 
+\end{itemize}
+
+\vspace{5mm}
+
+Constantes:
+\begin{itemize}
+	\item $\gamma$: factor multiplicativo del precio de año a año (inflación + \ldots)
+	\item $c_i$: storage cost for a product  $i$ (unitary) for a day
+	\item $C_{max}^{i}$: maximum quantity of product $i$ that we can store
+\end{itemize}
+
+
+\vspace{5mm}
+
+Precalculados
+\begin{itemize}
+\item  $v^{i}\left( t \right) $: consumption velocity of product $i$ at time  $t$
+\item $\xi^{i}\left( t \right) $: all hospitals unified demand of product $i$ at time  $t$
+\end{itemize}
+
+\vspace{5mm}
+
+
+Constants to change by client:
+\begin{itemize}
+	\item $\beta$: extra quantity factor in order (resilience)
+	\item  $P_{max}$ : $\#$ orders \quad  $\propto$ \quad $CO_2$ emissions
+\end{itemize}
+
+
+\newpage
+\section{Variables}
+\begin{itemize}
+	\item $p^{i}\left( t \right) $ : quantity of product $i$ demanded at time  $t \in \left\{ 1,\ldots,12 \right\} $
+	\item  $\delta\left( t \right) $: boolean (binary) variable to determine if there is an order at time $t \in \left\{ 1,\ldots,12 \right\} $
+\end{itemize}
+
+\vspace{15mm}
+
+\section{Restrictions}
+
+\begin{remark}
+Fijamos $i$. Ajustamos un modelo para cada producto
+\end{remark}
+
+
+\begin{definition}
+We define $S^{i}\left( t \right) $ as the inventory of product  $i$ at time  $t$ (En el dia 2 del mes):
+ \begin{align*}
+	&S^{i}\left( t \right) = - \sum_{t'=1}^{t-1} v^{i}\left( t' \right)  + \sum_{t'=1}^{t} \delta\left( t' \right) \cdot p^{i}\left( t' \right) 
+.\end{align*}
+\end{definition}
+
+
+\vspace{5mm}
+
+Capacity restriction:
+\begin{align*}
+	&S^{i}\left( t \right) \le C^{i}_{max}
+.\end{align*}
+
+Restriction to verify we have enough inventory
+\begin{align*}
+	&S^{i}\left( t \right) + \sum_{t'=1}^{t-1} v^{i}\left( t' \right) \ge \beta\cdot \sum_{t'=1}^{t} \xi^{i}\left( t' \right) 
+.\end{align*}
+
+
+Restriction to only do $P_{max}$ orders:
+\begin{align*}
+	&\sum_{t=1}^{12} \delta\left( t \right) = P_{max}
+.\end{align*}
+
+Basic restricitions:
+\begin{align*}
+	&S^{i}\left( t \right) \ge  0\\
+	&p^{i}\left( t \right) \ge 0
+.\end{align*}
+
+Restrictions over variables:
+\begin{align*}
+	&\delta \left( t \right) \in  \left\{ 0,1 \right\} 
+.\end{align*}
+
+
+\begin{remark}
+ESTO SE DEBE VERIFICAR $\forall t = 1,\ldots,12$
+\end{remark}
+
+\vspace{15mm}
+
+\section{Objetivos}
+
+\begin{itemize}
+	\item \underline{Minimizar precio}
+\end{itemize}
+
+Formula a minimizar:
+\begin{align*}
+	&\min \sum_{t}^{} S^{i}\left( t \right) \cdot c_i
+.\end{align*}
+
+\end{document}
+
+
+
