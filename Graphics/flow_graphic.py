@@ -80,10 +80,24 @@ clock = pygame.time.Clock()
 # we will use to run the while loop
 run = True
  
+#Constants positon / colors
 pos_hosp = np.linspace(100,500,5)
 pos_distrib = np.linspace(100,500,3)
 colors_distrib = [(252,169,133), (251,182,209), (191,228,118)]
 colors_lines = [(253,202,162), (253,222,238), (224,243,176)]
+
+#Variables model
+list_compras_x_prod = [[10,20,30,40,50,60,70,80,90,100,110,120],
+                       [120,110,100,90,80,70,60,50,40,30,20,10],
+                       [70,80,90,100,110,120,10,20,30,40,50,60]]
+list_deltas_x_prod = [[1,1,1,1,1,1,1,1,1,1,1,1],
+                      [1,0,1,0,1,0,1,0,1,0,1,0],
+                      [0,1,0,1,0,1,0,1,0,1,0,1]]
+
+#Create time variables
+cont = 0
+day = 0
+month = 0
 
 # Creating an infinite loop
 # to run our game
@@ -97,7 +111,13 @@ while run:
     # Setting the framerate to 60fps
     clock.tick(60)
 
-    
+    # Update time variables
+    if(cont == 100):
+        day += 1
+        cont = 0
+        if(day == 31):
+            day = 0
+            month += 1
 
     for i in range(0,5):
         pygame.draw.line(window, (204,236,239), (700, pos_hosp[i]), (400,300), width = 15)
@@ -108,6 +128,10 @@ while run:
         pygame.draw.circle(window, colors_distrib[i], (100, pos_distrib[i]), 40)
  
     pygame.draw.circle(window, (165,137,193), (400,300), 60)
+
+    for i in range(0,3):
+        if(day == 1):
+
     
  
     # Updating the display surface
@@ -115,3 +139,5 @@ while run:
  
     # Filling the window with white color
     window.fill((255, 255, 255))
+
+    cont += 1
