@@ -12,13 +12,17 @@ In this project, we propose a mathematical model and implementation based on a c
 
 ## Challenge
 
-*What is expected from the challenge?*
-- 
+**MAIN GOAL**: Stablish a purchase plan for 2023
+
+*What else can we analyse?*
+- Predict the expenses for the following year by product
+- Detect purchase patterns and combinations
+- Evaluate the environmental impact if purchase strategy changes
 
 
 ## Evaluation Criteria
 *What will be measured?*
-- **Answer to the business case**: 
+- **Answer to the business case**
 
 - **Analytical skills**
 
