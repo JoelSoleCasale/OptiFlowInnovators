@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_card import card
 from PIL import Image
+import sys
 
 
 st.set_page_config(
@@ -10,7 +11,8 @@ st.set_page_config(
 st.markdown("# NTT DATA Datathon FME-UPC 💻")
 st.sidebar.markdown("# Home 🎈")
 
-logo = Image.open("LogoOptiFlow.jpeg")
+
+logo = Image.open("./project_dashboard/LogoOptiFlow.jpeg")
 
 st.subheader("Streamlining Inventory Management for Storable Healthcare Products in a Unified Demand Environment")
 st.info("Welcome to our project! ⛩️", icon="⛩️")
@@ -69,7 +71,7 @@ st.subheader("Abstract")
 st.write(
     "In this project, we propose a mathematical model and implementation based on a collaborative scheme designed to optimize the storage and distribution of medical products to hospitals given historical data.")
 
-with open("../Paper/NTTStorableSupplyPlanner/pdf/main.pdf", "rb") as pdf_file:
+with open("./Paper/NTTStorableSupplyPlanner/pdf/main.pdf", "rb") as pdf_file:
     PDFbyte = pdf_file.read()
 
 st.download_button(label="Dowload paper",
@@ -93,7 +95,7 @@ st.markdown("# Unified demand model 🌐")
 st.sidebar.markdown("# Unified demand model 🌐")
 
 
-video_file = open('../Graphics/animation0.mp4', 'rb')
+video_file = open('./Graphics/animation0.mp4', 'rb')
 video_bytes = video_file.read()
 
 st.write("Simulation of the flow of products between providers and a central storage center that supplies all hospitals in a region:")
@@ -108,7 +110,7 @@ st.markdown("# Model results 📋")
 st.sidebar.markdown("# Model results 📋")
 
 st.write('We have used different values for', r'$\beta$', ' and ', r'$P_{max}$',' to observe the effects of different environmental and robustness restrictions on the optimal cost of storage.')
-heatmap = Image.open("heatmap.jpg")
+heatmap = Image.open("./project_dashboard/heatmap.jpg")
 st.image(heatmap, use_column_width=True)
 st.caption("Heatmap of optimal costs in terms of "+r'$\beta$'+" and "+ r'$P_{max}$'+" for product 70130 (APÓSITO DE HIDROCOLOIDE-7)")
 st.write(' As expected, the more robust and the fewer orders allowed (i.e. the less environmental impact) lead to increased optimal costs. We also observe that it is significantly harder to have a lesser environmental impact than to be more robust.')
