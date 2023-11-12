@@ -74,6 +74,7 @@
 \usepackage{endnotes,rotating}
 \usepackage{times}
 \usepackage{lipsum}
+\usepackage[numbers]{natbib}
 
 \usepackage{vruler}
 \def\linenos{\setvruler[55pt][1][5][1][1][590pt][590pt][-14pt][\textheight]
@@ -310,7 +311,7 @@
 %  {\message{No configuration file for #1}}%
 %  \makeatother}
 
-\def\@journal@title{HP Challenge}
+\def\@journal@title{NTT Data Challenge}
 
 \def\@doi@fixed@field{10.1049/iet-cta.}
 \def\@doi@variable@field{00000000000000000000}
@@ -404,7 +405,7 @@
 
 \newcommand{\evenpagefooter}{\vbox{\hbox to \textwidth{\hfill\textit{OptiFlow,} \ifrevises\year@info, Vol.~\vol@info, Iss.~\issue@info,\ \else\fi \iferratum\relax p.~\else pp.~\fi\page@extent@info}
 \ifIET
-\vbox{\hbox to \textwidth{\thepage\hfill$\copyright$ HackUPC HP Challenge Supply Chain \cyear@info}}
+\vbox{\hbox to \textwidth{\thepage\hfill$\copyright$ Datathon NTT Data Challenge \cyear@info}}
 \else
 \ifOTHER
 \vbox{\hbox to \textwidth{\thepage\hfill$\copyright$ Yet to come}}
@@ -435,7 +436,7 @@
 
 \newcommand{\oddpagefooter}{\vbox{\hbox to \textwidth{\textit{OptiFlow,} \ifrevises\year@info, Vol.~\vol@info, Iss.~\issue@info,\ \else\fi \iferratum\relax p.~\else pp.~\fi\page@extent@info\hfill}
 \ifIET
-\vbox{\hbox to \textwidth{$\copyright$ HackUPC HP Challenge Supply Chain \cyear@info\hfill\thepage}}
+\vbox{\hbox to \textwidth{$\copyright$ \cyear@info\hfill\thepage}}
 \else
 \ifOTHER
 \vbox{\hbox to \textwidth{$\copyright$ Yet to come\hfill\thepage}}%
@@ -474,11 +475,11 @@
 
 \newcommand{\evenerratumfoot}{\vbox{\fontsize{8}{10}\selectfont\sf%
 \hbox to \textwidth{\thepage\hfill}\par%
-\hbox to \textwidth{{$\copyright$ HackUPC HP Challenge Supply Chain \cyear@info}\hfill{\textit{OptiFlow,}\ \cyear@info,\ \ifrevises\year@info, Vol.~\vol@info, Iss.~\issue@info,\ \else\fi p.~\page@extent@info}}}}%
+\hbox to \textwidth{{$\copyright$ Datathon NTT Data Challenge \cyear@info}\hfill{\textit{OptiFlow,}\ \cyear@info,\ \ifrevises\year@info, Vol.~\vol@info, Iss.~\issue@info,\ \else\fi p.~\page@extent@info}}}}%
 
 \newcommand{\odderratumfoot}{\vbox{\fontsize{8}{10}\selectfont\sf%
 \hbox to \textwidth{\hfill\thepage}\par%
-\hbox to \textwidth{{\textit{OptiFlow,}\ \cyear@info,\ \ifrevises\year@info, Vol.~\vol@info, Iss.~\issue@info,\ \else\fi p.~\page@extent@info}\hfill{$\copyright$ HackUPC HP Challenge Supply Chain \cyear@info}}}}%
+\hbox to \textwidth{{\textit{OptiFlow,}\ \cyear@info,\ \ifrevises\year@info, Vol.~\vol@info, Iss.~\issue@info,\ \else\fi p.~\page@extent@info}\hfill{$\copyright$ Datathon NTT Data Challenge \cyear@info}}}}%
 
 %\setcounter{footnote}{0}
 \renewcommand\thefootnote{\@fnsymbol\c@footnote}

@@ -11,48 +11,6 @@ import datetime
 DATA_PATH = "data"
 GRAPHICS_PATH = "Graphics"
 
-'''
-# basic date features
-def generate_date_features(df):
-    df["YEAR"] = df["FECHAPEDIDO"].dt.year
-    df["MONTH"] = df["FECHAPEDIDO"].dt.month
-    return df
-
-#import dataframe
-df = pd.read_excel(DATA_PATH + "/consumo_material_clean.xlsx")
-
-# FECHAPEDIDO to datetime in day/month/year format
-df["FECHAPEDIDO"] = pd.to_datetime(df["FECHAPEDIDO"], dayfirst=True)
-
-#Select useful columns
-df = generate_date_features(df)
-df = df[["CODIGO", "YEAR", "MONTH", "CANTIDADCOMPRA"]]
-
-#Select dates 2023
-df = df.loc[df["YEAR"] == 2023]
-
-#Create dataframe with xi values
-df_xi_velocity = df.groupby(["CODIGO","MONTH"]).CANTIDADCOMPRA.sum().reset_index()
-df_xi_velocity = df_xi_velocity.sort_values(["CODIGO", "MONTH"], ascending=[True, True])
-
-#Compute velocity of consumption for each product at each time
-df_xi_velocity["VELOCITY"] = 0
-for i in range(0, len(df_xi_velocity)):
-    if((i+1 < len(df_xi_velocity)) and (df_xi_velocity.iloc[i,0] == df_xi_velocity.iloc[i+1,0])): 
-        df_xi_velocity.iloc[i,3] = df_xi_velocity.iloc[i,2]/(df_xi_velocity.iloc[i+1,1]-df_xi_velocity.iloc[i,1])
-    else:
-        df_xi_velocity.iloc[i,3] = df_xi_velocity.iloc[i,2]/(13-df_xi_velocity.iloc[i,1])
-
-#Print results
-#print(df_xi_velocity.head())
-'''
-
-
-
-
-
-
-
 
 # Importing the pygame module
 import pygame
@@ -95,32 +53,63 @@ products_imgs[2] = pygame.transform.scale(products_imgs[2], (60,60))
 # we will use to run the while loop
 run = True
  
+
+
+
+
 #Constants positon / colors
 pos_hosp = np.linspace(100,500,5)
 pos_distrib = np.linspace(100,500,3)
 colors_distrib = [(252,169,133), (251,182,209), (191,228,118)]
 colors_lines = [(253,202,162), (253,222,238), (224,243,176)]
 
-#Variables model
-list_compras_x_prod = np.array([[40,50,30,40,50,60,70,80,90,100,110,120],
-                       [50,110,100,90,80,70,60,50,40,30,20,10],
-                       [70,70,90,100,110,120,10,20,30,40,50,60]])
 
-list_compras_x_prod = list_compras_x_prod*(40/max([sublist[-1] for sublist in list_compras_x_prod]))
 
-list_deltas_x_prod = [[1,1,1,1,1,1,1,1,1,1,1,1],
-                      [1,0,1,0,1,0,1,0,1,0,1,0],
-                      [1,1,0,1,0,1,0,1,0,1,0,1]]
 
-list_velocity_x_prod = [[5,5,5,5,5,5,5,5,5,5,5,5],
-                        [1,1,1,1,1,1,1,1,1,1,1,1],
-                        [3,3,3,3,3,3,3,3,3,3,3,3]]
 
-hospitals_ask_for_prod_in_month = [ [[1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0]],
-                                    [[0,0,1,0,1,0,1,0,0,0,0,1], [0,0,0,0,0,0,0,0,0,0,0,0], [1,0,1,0,0,0,0,0,0,0,1,0]],
-                                    [[1,0,1,0,1,0,1,0,1,0,1,0], [1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1]],
-                                    [[1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0]],
-                                    [[1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0]]]
+
+#Load model parameters
+df_70130 = pd.read_csv(DATA_PATH + "/jan_df_70130.csv")
+
+
+list_compras_x_prod = np.array([[0,0,0,0,0,0,0,0,0,0,0,0],
+                       [800,800,800,800,800,800,800,800,800,800,800,800],
+                       [0,0,0,0,0,0,0,0,0,0,0,0]])
+list_compras_x_prod[2] = df_70130["p"].to_numpy()
+list_compras_x_prod[0] = np.flip(list_compras_x_prod[2])
+
+
+
+list_compras_x_prod = list_compras_x_prod*(40/max([max(sublist) for sublist in list_compras_x_prod]))
+
+
+list_deltas_x_prod = np.array([[0,0,0,0,0,0,0,0,0,0,0,0],
+                      [1,1,1,1,1,1,1,1,1,1,1,1],
+                      [0,0,0,0,0,0,0,0,0,0,0,0]])
+list_deltas_x_prod[2] = df_70130["delta"].to_numpy()
+for i in range(0,len(list_deltas_x_prod[2])):
+    list_deltas_x_prod[2][i] = not(list_deltas_x_prod[2][i])
+list_deltas_x_prod[0] = np.flip(list_deltas_x_prod[2])
+
+
+list_velocity_x_prod = np.array([[0,0,0,0,0,0,0,0,0,0,0,0],
+                        [300,300,300,300,300,300,300,300,300,300,300,300],
+                        [0,0,0,0,0,0,0,0,0,0,0,0]])
+list_velocity_x_prod[2] = df_70130["v"].to_numpy()
+list_velocity_x_prod = (list_velocity_x_prod*(10/max([max(sublist) for sublist in list_velocity_x_prod]))).astype(int)
+list_velocity_x_prod[0] = np.flip(list_velocity_x_prod[2])
+
+
+hospitals_ask_for_prod_in_month = np.array([    [[1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0]],
+                                                [[0,0,1,0,1,0,1,0,0,0,0,1], [0,0,0,0,0,0,0,0,0,0,0,0], [1,0,1,0,0,0,0,0,0,0,1,0]],
+                                                [[1,0,1,0,1,0,1,0,1,0,1,0], [1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1]],
+                                                [[1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0]],
+                                                [[1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0]]])
+
+
+
+
+
 
 #Create time variables
 cont = 0
@@ -138,7 +127,6 @@ def calcular_pos(origen, desti, cont):
     ret = origen + (desti-origen)/np.linalg.norm((desti-origen))*d*cont/float(limit_cont)
     return ret
 
-frames = []
 
 # Creating an infinite loop
 # to run our game
@@ -198,15 +186,10 @@ while run and month < 12:
     # Updating the display surface
     pygame.display.update()
     
-    if(cont % 3 == 0):
-        pygame.image.save(window, GRAPHICS_PATH+"/frame.jpeg")
-        frames.append(imageio.imread(GRAPHICS_PATH+"/frame.jpeg"))
- 
     # Filling the window with white color
     window.fill((255, 255, 255))
 
     if(not pause): cont += 1
     
 
-imageio.mimsave(GRAPHICS_PATH+"/animation.gif", frames)
 
