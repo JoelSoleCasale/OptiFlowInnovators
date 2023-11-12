@@ -18,7 +18,7 @@ Healthcare supply chain optimization can contribute to solving some essential he
 - Advance towards a predictive system that ensures supplies on site preventing stockouts
 - Unified purchases for several months of supply and between several units leads to less CO2 emissions due to transportation
 
-**_MAIN GOAL_**: Stablish a purchase plan for 2023
+> **_MAIN GOAL_**: Stablish a purchase plan for 2023
 
 *What else can we analyse?*
 - Predict the expenses for the following year by product
