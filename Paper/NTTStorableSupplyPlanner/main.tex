@@ -16,12 +16,23 @@
 \usepackage{pdfpages}
 \usepackage{tcolorbox}
 \usepackage{transparent}
+\usepackage{geometry}
+\usepackage{lipsum}
 \pgfplotsset{compat=1.18}
 \usepackage{tikz}
 \usetikzlibrary{shapes.misc}
 \newtheorem{theorem}{Theorem}{}
 \newtheorem{corollary}{Corollary}{}
 \newtheorem{remark}{Remark}{}
+
+% change margins
+\geometry{top=2cm, bottom=3cm, left=2.5cm, right=2.5cm}
+% space after section
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsection}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+\renewcommand\thesection{\arabic{section}.}
 
 \setlength{\columnsep}{2em}
 \hypersetup{hidelinks}
@@ -48,9 +59,9 @@ cross/.default={5pt}}
 
 \begin{document}
 
-\title{Optimizing Supply Chain orders for storable products under unified demand}
+\title{Streamlining Inventory Management for Storable Healthcare Products in a Unified Demand Environment}
 
-\author{Nathaniel Mitrani \\ \and Alex Serrano \\  \and Jan Tarrats \\ \and Joel Solé}
+\author{Nathaniel Mitrani, Alex Serrano, Jan Tarrats, Joel Solé\\ Polytechnic University of Catalonia}
 
 \maketitle
 
@@ -58,26 +69,30 @@ cross/.default={5pt}}
 	In this project, we propose a mathematical model and implementation based on a collaborative scheme designed to optimize the storage and distribution of medical products to hospitals given historical data.
 \end{abstract}
 
-
 \section{Introduction}\label{sec1}
 Supply chain robustness is of paramount importance for businesses, as it not only ensures operational continuity but also provides significant financial benefits. Especially in medical settings, robustness is imperial as the effects of a shortage can cost human lives \cite{key3}.
 Additionally, it is of paramount importance for a company to minimize the ecological footprint stemming from its activities, especially related to transportation which is a major source of pollution, 28\% as of 2021 \cite{key1}.
 
 \section{Problem Statement}\label{sec2}
-The goal is therefore to find cost-optimality whilst satisfying robustness and environmental constraints. We suggest a unified demand approach to tackle the problem, that is an agreement reached by an array of medical institutions to combine the demand for medical products in one single order to reduce cost \cite{key2}, followed by a mathematical model and further implementation to solve the problem in this setting. For simplicity, we consider a time granularity of months, making the maximum amount of orders to be monthly.
+The goal is therefore to find cost-optimality whilst satisfying robustness and environmental constraints. We suggest a unified demand approach to tackle the problem, that is an agreement reached by an array of medical institutions to combine the demand for medical products in one single order to reduce cost \cite{key2}, followed by a mathematical model and further implementation to solve the problem in this setting. For simplicity, we consider a time granularity of months.
 
 \section{Proposed solution}\label{sec3}
-In the unified demand scenario, we assume that all the hospitals group their orders for a given product in one order, with the referenced economical benefits that this supposes \cite{key2}. We consider therefore each product separately and build a model to optimize the processes for each product. Given a specific product, we consider a unique provider and distribution center (as we are in a given region we can assume a certain locality). Our challenge is to optimize the costs given a certain environmental footprint and resilience score. We quantify the environmental impact as proportional to the number of orders, as referenced in \cite{key1} and in the problem specification. This amounts to choosing when and how much to order given robust satisfaction of demand, fixed number of orders, and storage costs.
+In the unified demand scenario, we assume that all the hospitals group their orders for a given product in one order, with the referenced economical benefits that this supposes \cite{key2}. We consider therefore each product separately and build a model to optimize the processes for each product.
+
+Given a specific product, we consider a unique provider and distribution center (as we are in a given region we can assume a certain locality). Our challenge is to optimize the costs given a certain environmental footprint and resilience score.
+
+We quantify the environmental impact as proportional to the number of orders, as referenced in \cite{key1} and in the problem specification. This amounts to choosing when and how much to order given robust satisfaction of demand, fixed number of orders, and storage costs.
+
 The demand we obtain comes from a prediction for the purchase plan, from which we yield the amount of units needed for the coming year.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=8cm]{WhatsApp Image 2023-11-12 at 01.28.21.jpeg}
 	\caption{Image showing concatenation of 3 models (3 products), assuming that the distribution centers for each product are in the same location (graphical purposes)}
 	\label{fig:enter-label}
 \end{figure}
 
-\section{Obtaining yearly demand for a product}
+\section{Modelling product demand}
 Our goal here is to establish the optimal offer (amount of units) for a given product throughout 2023, as a byproduct of creating a demand predictor that uses historical data.
 
 \subsection{Model evaluation}
@@ -107,7 +122,7 @@ The results are shown in Table \ref{tab:enter-label}.
 \subsubsection{Temporal Fusion Transformers}
 The Temporal Fusion Transformer \cite{key4} is a novel attention-based architecture that combines high-performance multi-horizon forecasting with interpretable insights into temporal dynamics. To learn temporal relationships at different scales, TFT uses recurrent layers (LSTMs) for local processing and interpretable self-attention layers for long-term dependencies. TFT utilizes specialized components to select relevant features (variable selection networks) and a series of gating layers (with gated linear units) to suppress unnecessary components, enabling high performance in a wide range of scenarios.
 
-We have employed our own implementation of the paper in PyTorch, and we have used the same hyperparameters as in the paper, that demonstrate a 36-69\% improvement over other deep forecasting learners such as DeepAR and NHiTS in standard benchmarks (see paper).
+We have employed our own implementation of the paper in PyTorch, and we have used the same hyperparameters as in the paper, that demonstrate a 36-69\% improvement over other deep forecasting learners such as DeepAR and NHiTS in standard benchmarks (see paper). The model has been trained in 1,5 GPU hours in an NVIDIA P100.
 
 See the summary of the results in Table \ref{tab:enter-label}.
 
@@ -217,13 +232,16 @@ We have used different values for $\beta$ and $P_{max}$ to observe the effects o
 \end{figure}
 
 
-
 \section{Conclusions and future work}
 
+In conclusion, our collaborative scheme and mathematical model offer a promising approach to optimize the storage and distribution of medical products in a unified demand scenario. The consideration of environmental impact and resilience scores in the optimization process aligns with the growing emphasis on sustainability and supply chain robustness. However, there are several avenues for improvement and future research that can enhance the effectiveness of our proposed solution.
 
+One key area for improvement lies in refining the deep learning model used for predicting product demand. Our current approach relies on a predictive model for the purchase plan, which determines the quantity of units needed for the upcoming year. By incorporating more advanced deep learning techniques, such as recurrent neural networks or attention mechanisms, we can potentially enhance the accuracy of our demand predictions. This, in turn, would lead to more precise optimization of storage and distribution processes.
 
-\newpage
-\onecolumn
+Furthermore, a deeper exploration into storage optimization processes could yield additional insights. Investigating advanced storage strategies, such as dynamic allocation algorithms or real-time inventory management, could contribute to further reducing costs and improving overall efficiency. Additionally, considering dynamic changes in demand patterns and adjusting storage strategies accordingly could enhance our model's adaptability to evolving scenarios.
+
+In summary, future work should focus on enhancing the accuracy of demand predictions through advanced deep learning techniques and exploring advanced storage optimization strategies. By addressing these aspects, we can further advance the effectiveness of our proposed solution and contribute to the ongoing efforts in creating resilient, environmentally conscious supply chains for medical products.
+
 \begin{thebibliography}{}
 	\bibitem{key1} Sources of greenhouse gas emissions | US EPA. (n.d.). \url{https://www.epa.gov/ghgemissions/sources-greenhouse-gas-emissions }
 	\bibitem{key2} L’ICS ESTALVIA 30,5 milions d’euros fent Compres Agregades. Institut Català de la Salut. (n.d.). \url{https://ics.gencat.cat/ca/detall/noticia/compres-agregades.html}
@@ -231,5 +249,6 @@ We have used different values for $\beta$ and $P_{max}$ to observe the effects o
 	\bibitem{key4} Lim, Bryan \& Arık, Sercan \& Loeff, Nicolas \& Pfister, Tomas. (2021). Temporal Fusion Transformers for interpretable multi-horizon time series forecasting. International Journal of Forecasting. 37. 10.1016/j.ijforecast.2021.03.012.
 	\bibitem{key5}{Zhou, He, et al. Tweedie Gradient Boosting for Extremely Unbalanced Zero-Inflated Data. arXiv, 14 Nov. 2019.}
 \end{thebibliography}
+
 \end{document}
 
