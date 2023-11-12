@@ -43,6 +43,8 @@ def train_model_eval(
         y_test_par_pred = np.maximum(y_test_par_pred, 0)
         preds.append(y_test_par_pred)
 
+    # Cross-validation gives boltzmann weights close to 0.5,
+    # we change it to the mean to avoid overfitting
     y_test_pred = np.mean(preds, axis=0)
 
     # LOSSES
