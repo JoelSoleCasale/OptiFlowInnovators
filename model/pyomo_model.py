@@ -43,7 +43,7 @@ class PartialModel(pyo.ConcreteModel):
     def set_parameters(self):
         self.xi = self.compute_xi()
         self.v = self.compute_consumption_rate()
-        
+
     def set_constraints(self):
         self.set_inventory_constraint()
 
@@ -54,8 +54,8 @@ class PartialModel(pyo.ConcreteModel):
 
     def inventory(self, t):
         return (
-            sum(self.delta[i-1] * self.p[i] - self.v[i] for i in range(1, t))
-            + self.delta[t-1] * self.p[t]
+            sum(self.delta[i - 1] * self.p[i] - self.v[i] for i in range(1, t))
+            + self.delta[t - 1] * self.p[t]
         )
 
     def set_nonegative_inventory_constraint(self):
@@ -77,7 +77,7 @@ class PartialModel(pyo.ConcreteModel):
     def set_sufficient_inventory_constraint(self):
         def rule(model, t):
             return (
-                sum(model.delta[i-1] * model.p[i] for i in range(1, t+1))
+                sum(model.delta[i - 1] * model.p[i] for i in range(1, t + 1))
                 >= sum(model.xi[i] for i in range(t)) * model.beta
             )
 
@@ -94,17 +94,33 @@ class PartialModel(pyo.ConcreteModel):
     def compute_xi(self):
         data_xi = self.data.groupby(["MONTH"]).CANTIDADCOMPRA.sum().reset_index()
         data_xi = data_xi.set_index("MONTH")
-        return [data_xi.loc[i, "CANTIDADCOMPRA"] if i in data_xi.index else 0 for i in range(1,13)]
+        return [
+            data_xi.loc[i, "CANTIDADCOMPRA"] if i in data_xi.index else 0
+            for i in range(1, 13)
+        ]
 
     def compute_consumption_rate(self):
         months = self.data["MONTH"].unique().tolist() + [13]
         months.sort()
         months_sep = [months[i] - months[i - 1] for i in range(1, len(months))]
-        velocity = [xi_i/deltaX for xi_i, deltaX in zip(self.xi, months_sep) for _ in range(deltaX)]
+        velocity = [
+            xi_i / deltaX
+            for xi_i, deltaX in zip(self.xi, months_sep)
+            for _ in range(deltaX)
+        ]
         return velocity
 
     @staticmethod
-    def process_data(data):
+    def process_data(data: pd.DataFrame):
+        """
+        Process data...
+
+        Args:
+            data (pd.Dataframe): ...
+
+        Returns:
+            cleaned data (pd.DataFrame)
+        """
         data = data.copy()
         data["FECHAPEDIDO"] = pd.to_datetime(data["FECHAPEDIDO"], dayfirst=True)
 
