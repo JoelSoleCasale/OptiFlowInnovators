@@ -8,13 +8,26 @@ unified demand <br>
 </h1>
 
 
+## Abstract
+In this project, we propose a mathematical model and implementation based on a collaborative scheme designed to optimize the storage and distribution of medical products to hospitals given historical data.
+
 ## Challenge
 
-
+*What is expected from the challenge?*
+- 
 
 
 ## Evaluation Criteria
+*What will be measured?*
+- **Answer to the business case**: 
 
+- **Analytical skills**
+
+- **Storytelling & rationale**
+
+- **Innovation**
+
+- **Oral presentation skills**
 
 ## Data
 Some information about the given data:
