@@ -97,4 +97,9 @@ cd src
 poetry run python train.py --data_path  ../data --model boltzmann
 ```
 
+You should obtain the following results (as reported in the paper):
 
+| Model    | Tweedie | Expense MAPE |
+|----------|---------|--------------|
+| Ensemble | 0.70894 | 0.07146      |
+| TFT      | 0.16871 | 0.2293       |
