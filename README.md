@@ -79,3 +79,22 @@ Given a specific product, we consider a unique provider and distribution center 
 We quantify the environmental impact as proportional to the number of orders, as referenced in and in the problem specification. This amounts to choosing when and how much to or- der given robust satisfaction of demand, fixed number of orders, and storage costs.
 
 The demand we obtain comes from a prediction for the purchase plan, from which we yield the amount of units needed for the coming year.
+
+### Replicate the results
+
+To replicate our training and obtain the metrics reported in the paper, execute the training script in `src/train.py`.
+
+For this, generate the virtual environment and install the necessary dependencies using [poetry]():
+
+```bash
+poetry install
+```
+
+And execute the training script. The training script has two CLI arguments, `data_path` requires the relative path to the training data, `model` defines which model to use, has to be one of `boltzmann` (for the Boltzmann ensemble) or `tft` (for the Temporal Fusion Transformer, GPU required!).
+
+```bash
+cd src
+poetry run python train.py --data_path  ../data --model boltzmann
+```
+
+
