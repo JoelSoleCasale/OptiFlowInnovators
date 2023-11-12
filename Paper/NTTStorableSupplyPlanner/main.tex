@@ -1,0 +1,201 @@
+\documentclass[11pt,twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[numbers]{natbib}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{amsmath, amssymb}
+\usepackage{mdframed}
+\usepackage{pgfplots}
+\usepackage{import}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\usepackage{xifthen}
+\usepackage{float}
+\usepackage{nicematrix}
+\usepackage{pdfpages}
+\usepackage{tcolorbox}
+\usepackage{transparent}
+\pgfplotsset{compat=1.18}
+\usepackage{tikz}
+\usetikzlibrary{shapes.misc}
+\newtheorem{theorem}{Theorem}{}
+\newtheorem{corollary}{Corollary}{}
+\newtheorem{remark}{Remark}{}
+
+\setlength{\columnsep}{2em}
+\hypersetup{hidelinks}
+\usetikzlibrary{arrows, arrows.meta}
+
+\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt, style = ultra thick},
+%default radius will be 1pt. 
+cross/.default={5pt}}
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\usepackage{collectbox}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+\usepackage{fancyhdr}
+
+\begin{document}
+
+\title{Optimizing Supply Chain orders for storable products under unified demand}
+
+\author{Nathaniel Mitrani \\ \and Alex Serrano \\  \and Jan Tarrats \\ \and Joel Solé}
+
+\maketitle
+
+\begin{abstract}
+In this project, we propose a mathematical model and implementation based on a collaborative scheme designed to optimize the storage and distribution of medical products to hospitals given historical data.
+\end{abstract}
+
+
+\section{Introduction}\label{sec1}
+Supply chain robustness is of paramount importance for businesses, as it not only ensures operational continuity but also provides significant financial benefits. Especially in medical settings, robustness is imperial as the effects of a shortage can cost human lives \cite{key3}.
+Additionally, it is of paramount importance for a company to minimize the ecological footprint stemming from its activities, especially related to transportation which is a major source of pollution, 28\% as of 2021 \cite{key1}. 
+
+\section{Problem Statement}\label{sec2}
+The goal is therefore to find cost-optimality whilst satisfying robustness and environmental constraints. We suggest a unified demand approach to tackle the problem, that is an agreement reached by an array of medical institutions to combine the demand for medical products in one single order to reduce cost \cite{key2}, followed by a mathematical model and further implementation to solve the problem in this setting. For simplicity, we consider a time granularity of months, making the maximum amount of orders to be monthly.
+
+\section{Proposed solution}\label{sec3}
+In the unified demand scenario, we assume that all the hospitals group their orders for a given product in one order, with the referenced economical benefits that this supposes \cite{key2}. We consider therefore each product separately and build a model to optimize the processes for each product. Given a specific product, we consider a unique provider and distribution center (as we are in a given region we can assume a certain locality). Our challenge is to optimize the costs given a certain environmental footprint and resilience score. We quantify the environmental impact as proportional to the number of orders, as referenced in \cite{key1} and in the problem specification. This amounts to choosing when and how much to order given robust satisfaction of demand, fixed number of orders, and storage costs.
+The demand we obtain comes from a prediction for the purchase plan, from which we yield the amount of units needed for the coming year. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=8cm]{WhatsApp Image 2023-11-12 at 01.28.21.jpeg}
+    \caption{Image showing concatenation of 3 models (3 products), assuming that the distribution centers for each product are in the same location (graphical purposes)}
+    \label{fig:enter-label}
+\end{figure}
+
+\section{Obtaining yearly demand for a product}
+Our goal here is to establish the optimal offer (amount of units) for a given product throughout 2023, as a byproduct of creating a demand predictor that uses historical data.
+\subsection{Metrics used/considered to evaluate model}
+\begin{itemize}
+    \item Empirical metric for model selection: \textit{Tweedie loss} \cite{key5} (good for skewed distributions, allows comparison of goodness of fit of models for products with different magnitudes in order quantities), MSE was obviously bad because of change of magnitude. \\
+    \item Interpretable metric: mean absolute percent error in predicted expenses for 2023 by product. \\
+    
+\end{itemize}
+\subsection{Models considered}
+\begin{itemize}
+    \item \textit{Boltzmann ensemble} of GBMs (Boltzmann component used to avoid overfitting in the weighting process).
+    \item SOTA Demand forecasting: Temporal Fusion Transformers \cite{key4}. Employs mix of LSTM layers, transformers and variable selection networks.
+\end{itemize}
+
+We ended up using Boltzmann ensembles with Tweedie loss, due to the interpretability of the metric and careful analysis of model results.
+
+\section{Mathematical formulation of the model}
+\subsection{Model description}
+\subsubsection{Sets of indices}
+\begin{itemize}
+	\item $I = \left\{ \text{index set for the product} \right\}, i \in I $ 
+\end{itemize}
+
+\subsubsection{Constants}
+\begin{itemize}
+	\item $c_i$: monthly storage cost for a unit of product  $i$.
+	\item $C_{max}^{i}$: maximum quantity of product $i$ that we can store.
+\end{itemize}
+
+\subsubsection{Computed parameters}
+\begin{itemize}
+\item  $v^{i}\left( t \right) $: consumption velocity of product $i$ at time  $t$
+\item $\xi^{i}\left( t \right) $: Demand checkpoint of unified demand at time $t$.
+\end{itemize}
+
+
+\subsubsection{Parameters of optimization}
+\begin{itemize}
+	\item $\beta$: Resilience factor, factor by which we multiply demand to increase supply chain resilience.
+	\item  $P_{max}$ : Number of orders $\propto$ $CO_2$ emissions, a proxy for environmental impact.
+\end{itemize}
+
+\subsubsection{Variables}
+\begin{itemize}
+	\item $p^{i}\left( t \right) $ : quantity of product $i$ demanded at time  $t \in \left\{ 1,\ldots,12 \right\} $
+	\item  $\delta\left( t \right) $: boolean (binary) variable to determine if there is an order at time \qquad \qquad $t \in \left\{ 1,\ldots,12 \right\} $
+\end{itemize}
+
+\subsubsection{Auxiliary variables}
+
+\begin{remark}
+For simplicity and interpretability, we define this adjacent variable $s^{i}\left( t \right) $ corresponding to storage of product $i$ at the beginning of the time unit $t$.
+\end{remark}
+
+\begin{itemize}
+	\item $s^{i}\left( t \right) = - \sum_{t'=1}^{t-1} v^{i}\left( t' \right)  + \sum_{t'=1}^{t} \delta\left( t' \right) \cdot p^{i}\left( t' \right)  $
+\end{itemize}
+
+\subsubsection{Constraints}
+
+Capacity constraint:
+\begin{align*}
+	&s^{i}\left( t \right) \le C^{i}_{max} \hspace{4mm} \forall t = 1,\ldots,12
+.\end{align*}
+
+Sufficient inventory constraint:
+\begin{align*}
+	&s^{i}\left( t \right) + \sum_{t'=1}^{t-1} v^{i}\left( t' \right) \ge \beta\cdot \sum_{t'=1}^{t} \xi^{i}\left( t' \right) \hspace{4mm} \forall t = 1,\ldots,12
+.\end{align*}
+
+
+Environmental constraint ($P_{max}$ orders):
+\begin{align*}
+	&\sum_{t=1}^{12} \delta\left( t \right) = P_{max}
+.\end{align*}
+
+Variable domain constraint:
+\begin{align*}
+	&s^{i}\left( t \right) \ge 0 \hspace{4mm} \forall t = 1,\ldots,12\\
+	&p^{i}\left( t \right) \ge 0 \hspace{4mm} \forall t = 1,\ldots,12\\
+	&\delta \left( t \right) \in  \left\{ 0,1 \right\} \hspace{4mm} \forall t = 1,\ldots,12 
+\end{align*}
+
+\subsubsection{Objective function}
+\hspace{4mm} $ f_i(\mathbf{p}) = \sum_{t}^{} s^{i}\left( t \right) \cdot c_i$
+
+\subsection{Computation of parameters}
+\subsubsection{Computing $\xi_i(t)$}
+$\xi_i(t)$ is computed by cumulating all the purchased quantities of the product $i$ by all the hospitals predicted by our model in time step $t$.
+
+\subsubsection{Computing $v_i(t)$}
+$v_i(t)=\frac{\xi_i(t_-)}{t_+-t_-}$, where $t_-=\max\{t': 0\leq t'\leq t, \xi_i(t') \neq 0\}$, and $t_+=\min\{t':t<t'\leq 12, \xi_i(t')\neq 0\}$, i.e. $v_i(t)$ represents the slope between the previous purchase and the next, therefore supposing uniform consumption between orders, and complete depletion from one order to the next (i.e. the demand is perfectly predicted).
+
+
+\section{Example: product 70130}
+
+We have used different values for $\beta$ and $P_{max}$ to observe the effects of different environmental and robustness restrictions on the optimal cost of storage. As expected, the more robust and the fewer orders allowed (i.e. the less environmental impact) lead to increased optimal costs. We also observe that it is significantly harder to have a lesser environmental impact than to be more robust.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=9cm]{heatmap.pdf}
+    \caption{Heatmap of optimal costs in terms of $\beta$ and $P_{max}$.}
+    \label{fig:enter-label2}
+\end{figure}
+
+
+
+\section{Conclusions and future work}
+
+
+
+\newpage
+\onecolumn
+\begin{thebibliography}{}
+    \bibitem{key1} Sources of greenhouse gas emissions | US EPA. (n.d.). \url{https://www.epa.gov/ghgemissions/sources-greenhouse-gas-emissions }
+    \bibitem{key2} L’ICS ESTALVIA 30,5 milions d’euros fent Compres Agregades. Institut Català de la Salut. (n.d.). \url{https://ics.gencat.cat/ca/detall/noticia/compres-agregades.html}
+    \bibitem{key3} Phuong JM, Penm J, Chaar B, Oldfield LD, Moles R. The impacts of medication shortages on patient outcomes: A scoping review. PLoS One. 2019 May 3;14(5):e0215837. doi: 10.1371/journal.pone.0215837. PMID: 31050671; PMCID: PMC6499468.
+    \bibitem{key4} Lim, Bryan \& Arık, Sercan \& Loeff, Nicolas \& Pfister, Tomas. (2021). Temporal Fusion Transformers for interpretable multi-horizon time series forecasting. International Journal of Forecasting. 37. 10.1016/j.ijforecast.2021.03.012. 
+    \bibitem{key5}{Zhou, He, et al. Tweedie Gradient Boosting for Extremely Unbalanced Zero-Inflated Data. arXiv, 14 Nov. 2019.}
+\end{thebibliography}
+\end{document}
+
