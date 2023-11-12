@@ -20,7 +20,7 @@ In this project, we propose a mathematical model and implementation based on a c
 - Evaluate the environmental impact if purchase strategy changes
 
 
-## Evaluation Criteria
+### Evaluation Criteria
 *What will be measured?*
 - **Answer to the business case**
 
@@ -52,4 +52,4 @@ Purchase history since 2015 for of all the healthcare supplies of a group of hos
 
 
 
-## Other parts of our project
+## Solution
