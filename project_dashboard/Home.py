@@ -13,7 +13,7 @@ st.sidebar.markdown("# Home 🎈")
 logo = Image.open("LogoOptiFlow.jpeg")
 
 st.subheader("Streamlining Inventory Management for Storable Healthcare Products in a Unified Demand Environment")
-st.info("Welcome to our project!", icon="⛩️")
+st.info("Welcome to our project! ⛩️", icon="⛩️")
 
 st.write(" ")
 st.write("---")
