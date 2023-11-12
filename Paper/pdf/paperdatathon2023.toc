@@ -1,0 +1,6 @@
+\contentsline {section}{\numberline {1}Supositions}{3}{}%
+\contentsline {section}{\numberline {2}Extras}{3}{}%
+\contentsline {section}{\numberline {3}Parameters}{4}{}%
+\contentsline {section}{\numberline {4}Variables}{5}{}%
+\contentsline {section}{\numberline {5}Restrictions}{5}{}%
+\contentsline {section}{\numberline {6}Objetivos}{5}{}%
