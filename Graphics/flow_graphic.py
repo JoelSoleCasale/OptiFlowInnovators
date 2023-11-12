@@ -8,19 +8,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import datetime
 
-DATA_PATH = "data"
-GRAPHICS_PATH = "Graphics"
-
-
-# Importing the pygame module
 import pygame
-import numpy as np
 import math
 import imageio
 from pygame.locals import *
- 
-# Import randint method random module
 from random import randint
+
+DATA_PATH = "data"
+GRAPHICS_PATH = "Graphics"
  
 # Initiate pygame and give permission
 # to use pygame's functionality
@@ -33,11 +28,10 @@ altura = 600
 window = pygame.display.set_mode((anchura, altura))
  
 # Creating a new clock object to
-# track the amount of time
+# Track the amount of time
 clock = pygame.time.Clock()
  
-
-#load images
+# Load images
 hosp_img = pygame.image.load(GRAPHICS_PATH + '/hospital_logo.png')
 hosp_img = pygame.transform.scale(hosp_img, (50,50))
 storage_img = pygame.image.load(GRAPHICS_PATH + '/warehouse_logo.png')
@@ -53,24 +47,15 @@ products_imgs[2] = pygame.transform.scale(products_imgs[2], (60,60))
 # we will use to run the while loop
 run = True
  
-
-
-
-
-#Constants positon / colors
+# Constants positon / colors
 pos_hosp = np.linspace(100,500,5)
 pos_distrib = np.linspace(100,500,3)
 colors_distrib = [(252,169,133), (251,182,209), (191,228,118)]
 colors_lines = [(253,202,162), (253,222,238), (224,243,176)]
 
-
-
-
-
-
 #Load model parameters
 df_70130 = pd.read_csv(DATA_PATH + "/jan_df_70130.csv")
-
+print(df_70130)
 
 list_compras_x_prod = np.array([[0,0,0,0,0,0,0,0,0,0,0,0],
                        [800,800,800,800,800,800,800,800,800,800,800,800],
