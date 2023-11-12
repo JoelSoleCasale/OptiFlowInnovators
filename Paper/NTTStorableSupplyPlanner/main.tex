@@ -105,7 +105,7 @@ The Tweedie loss, as presented in Zhou, He et al. \cite{key5}, provides a way to
 To allow the less-technical users of the model to be able to interpret the error with its real-life repercussions, we report the mean absolute percent error in predicted expenses for 2023 by product. That is, the mean of the percentual absolute error between the real expenses and the predicted expenses for 2023.
 
 \subsection{Models considered}
-To allow for a diverse set of models, we have considered several families of predictors, specific forecasting models (Prophet), general regression models (GBMs, regularized polynomial regressions, generalized additive models) and deep learning models (seq2seq with and without attention, temporal fusion transformers). In the following, we report the best two results.
+To allow for a diverse set of models, we have considered several families of predictors, specific forecasting models (Prophet, \cite{key6}), general regression models (GBMs, regularized polynomial regressions, Generalized Additive Models) and deep learning models (Seq2Seq \cite{key7}, Temporal Fusion Transformers \cite{key4}). In the following, we report the best two results.
 
 \subsubsection{Boltzmann ensemble of GBMs}
 A Boltzmann ensemble is an ensemble that uses a Boltzmann distribution to weight the predictions of the models in the ensemble. The Boltzmann distribution is a probability distribution that assigns a probability to each model in the ensemble, and the probability of a model is proportional to its performance on the validation set. The Boltzmann distribution is defined as follows:
@@ -248,6 +248,7 @@ In summary, future work should focus on enhancing the accuracy of demand predict
 	\bibitem{key3} Phuong JM, Penm J, Chaar B, Oldfield LD, Moles R. The impacts of medication shortages on patient outcomes: A scoping review. PLoS One. 2019 May 3;14(5):e0215837. doi: 10.1371/journal.pone.0215837. PMID: 31050671; PMCID: PMC6499468.
 	\bibitem{key4} Lim, Bryan \& Arık, Sercan \& Loeff, Nicolas \& Pfister, Tomas. (2021). Temporal Fusion Transformers for interpretable multi-horizon time series forecasting. International Journal of Forecasting. 37. 10.1016/j.ijforecast.2021.03.012.
 	\bibitem{key5}{Zhou, He, et al. Tweedie Gradient Boosting for Extremely Unbalanced Zero-Inflated Data. arXiv, 14 Nov. 2019.}
+	\bibitem{key6}{Sean J. Taylor, Benjamin Letham (2018) Forecasting at scale. The American Statistician 72(1):37-45 (https://peerj.com/preprints/3190.pdf)}
 \end{thebibliography}
 
 \end{document}
