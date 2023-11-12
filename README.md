@@ -55,5 +55,21 @@ Purchase history since 2015 for of all the healthcare supplies of a group of hos
 ## Solution 
 *(See paper for more information)*
 
-### Our approach
+### Introduction
 Supply chain robustness is of paramount importance for businesses, as it not only ensures operational continuity but also provides significant financial benefits. Especially in medical settings, robustness is imperial as the effects of a shortage can cost human lives. Additionally, it is of paramount importance for a company to minimize the ecological footprint stemming from its activities, especially related to transportation which is a major source of pollution, 28% as of 2021.
+
+### Our approach: Problem Statement
+The goal is therefore to find cost-optimality whilst satisfying robustness and environmental constraints. We suggest a unified demand approach to tackle the problem, that is an agreement reached by an array of medical institutions to combine the demand for medical products in one single order to reduce cost, followed by a mathematical model and further implementation to solve the problem in this setting. For simplicity, we consider a time granularity of months.
+
+<p align="center">
+  <img width="300" height="200" src="./Paper/NTTStorableSupplyPlanner/WhatsApp Image 2023-11-12 at 01.28.21.jpeg">
+  <figcaption>Figure 1 - Image showing concatenation of 3 models (3 products), assuming that the distri- bution centers for each product are in the same location (graphical purposes).</figcaption>
+</p>
+
+### Proposed solution
+In the unified demand scenario, we assume that all the hospitals group their orders for a given product in one order, with the referenced economical benefits that this supposes. We consider therefore each product separately and build a model to optimize the processes for each product.
+
+Given a specific product, we consider a unique provider and distribution center (as we are in a given region we can assume a certain locality). Our challenge is to optimize the costs given a certain environmental footprint and resilience score.
+We quantify the environmental impact as proportional to the number of orders, as referenced in and in the problem specification. This amounts to choosing when and how much to or- der given robust satisfaction of demand, fixed number of orders, and storage costs.
+
+The demand we obtain comes from a prediction for the purchase plan, from which we yield the amount of units needed for the coming year.
