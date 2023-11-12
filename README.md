@@ -20,6 +20,7 @@ unified demand <br>
 Some information about the given data:
 
 ### consumo_material_clean.xlsx
+Purchase history since 2015 for of all the healthcare supplies of a group of hospitals
 - `CODIGO` *(object)*: Product code (first letter relates to product classification). Unique identifier of a product
 - `PRODUCTO` *(object)*: Product description
 - `FECHAPEDIDO` *(Date)*: Purchase date (day/month/year) 
