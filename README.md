@@ -8,7 +8,7 @@
 
 
 ## Abstract
-In this project, we propose a mathematical model and implementation based on a collab- orative scheme designed to optimize the storage and distribution of medical products to hospi- tals given historical data.
+In this project, we propose a mathematical model and implementation based on a collaborative scheme designed to optimize the storage and distribution of medical products to hospitals given historical data.
 
 ## Challenge
 
@@ -52,4 +52,8 @@ Purchase history since 2015 for of all the healthcare supplies of a group of hos
 
 
 
-## Solution
+## Solution 
+*(See paper for more information)*
+
+### Our approach
+Supply chain robustness is of paramount importance for businesses, as it not only ensures operational continuity but also provides significant financial benefits. Especially in medical settings, robustness is imperial as the effects of a shortage can cost human lives. Additionally, it is of paramount importance for a company to minimize the ecological footprint stemming from its activities, especially related to transportation which is a major source of pollution, 28% as of 2021.
