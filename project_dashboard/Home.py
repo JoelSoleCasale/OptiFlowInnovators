@@ -12,7 +12,7 @@ st.sidebar.markdown("# Home 🎈")
 
 logo = Image.open("LogoOptiFlow.jpeg")
 
-st.subheader("Optimizing Supply Chain orders for storable products under unified demand")
+st.subheader("Streamlining Inventory Management for Storable Healthcare Products in a Unified Demand Environment")
 st.info("Welcome to our project!", icon="⛩️")
 
 st.write(" ")
@@ -67,7 +67,7 @@ st.write(" ")
 
 st.subheader("Abstract")
 st.write(
-    "In this project, we propose a mathematical model and implementation based on a collaborative scheme designed to optimize the storage and distribution of medical products to hospitals given historical data.")
+    "In this project, we propose a mathematical model and implementation based on a collab- orative scheme designed to optimize the storage and distribution of medical products to hospi- tals given historical data.")
 
 with open("../Paper/NTTStorableSupplyPlanner/heatmap.pdf", "rb") as pdf_file:
     PDFbyte = pdf_file.read()

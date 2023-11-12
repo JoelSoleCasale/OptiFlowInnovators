@@ -3,13 +3,12 @@
 </p>
 
 <h1 align="center">
-    Optimizing Supply Chain orders for storable products under
-unified demand <br>
+    Streamlining Inventory Management for Storable Healthcare Products in a Unified Demand Environment <br>
 </h1>
 
 
 ## Abstract
-In this project, we propose a mathematical model and implementation based on a collaborative scheme designed to optimize the storage and distribution of medical products to hospitals given historical data.
+In this project, we propose a mathematical model and implementation based on a collab- orative scheme designed to optimize the storage and distribution of medical products to hospi- tals given historical data.
 
 ## Challenge
 
