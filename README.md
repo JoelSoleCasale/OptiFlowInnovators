@@ -20,7 +20,7 @@ unified demand <br>
 Some information about the given data:
 
 ### consumo_material_clean.xlsx
-- 'CODIGO' *(object)*: Product code (first letter relates to product classification). Unique identifier of a product
+- `CODIGO` *(object)*: Product code (first letter relates to product classification). Unique identifier of a product
 - 'PRODUCTO' *(object)*: Product description
 - 'FECHAPEDIDO' *(Date)*: Purchase date (day/month/year) 
 - 'NUMERO' *(object)*: Order number/year 
