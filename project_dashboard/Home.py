@@ -69,7 +69,7 @@ st.subheader("Abstract")
 st.write(
     "In this project, we propose a mathematical model and implementation based on a collaborative scheme designed to optimize the storage and distribution of medical products to hospitals given historical data.")
 
-with open("../Paper/documentation.pdf", "rb") as pdf_file:
+with open("../Paper/NTTStorableSupplyPlanner/heatmap.pdf", "rb") as pdf_file:
     PDFbyte = pdf_file.read()
 
 st.download_button(label="Dowload paper",
