@@ -43,7 +43,7 @@ class PartialModel(pyo.ConcreteModel):
     def set_parameters(self):
         self.xi = self.compute_xi()
         self.v = self.compute_consumption_rate()
-
+        
     def set_constraints(self):
         self.set_inventory_constraint()
 
