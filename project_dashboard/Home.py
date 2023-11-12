@@ -8,14 +8,9 @@ st.set_page_config(
 st.markdown("# NTT DATA Datathon FME-UPC 💻")
 st.sidebar.markdown("# Home 🎈")
 
-
 image = Image.open("LogoOptiFlow.jpeg")
 
 st.subheader("Welcome to our project!")
-
-st.image(image, use_column_width=True)
-
-st.write("---")
 
 st.subheader("About Us")
 team_members = [
@@ -54,6 +49,10 @@ for member, col in list(zip(team_members, cols)):
 
 st.write("---")
 
+st.image(image, use_column_width=True, width = 10)
+
+st.write("---")
+
 st.subheader("Abstract")
 st.write(
     "In this project, we propose a novel manner to optimize the robustness of a supply chain through stochastic modeling of its disruptions."
@@ -73,4 +72,19 @@ st.download_button(label="Dowload paper",
 st.write("---")
 
 st.subheader("Github")
-st.info('See out [Github](https://github.com/JoelSoleCasale/JNA-Datathon2023) repository', icon="ℹ️")
+st.info('See our [Github](https://github.com/JoelSoleCasale/JNA-Datathon2023) repository', icon="ℹ️")
+
+
+
+st.markdown("# Centralized model 🌐")
+st.sidebar.markdown("# Centralized model 🌐")
+
+video_html = """
+            <video controls width="600" autoplay="true" muted="true" loop="true">
+            <source 
+                    src="../Graphics/animation0.mp4" 
+                    type="video/mp4" />
+            </video>
+        """
+
+st.markdown(video_html, unsafe_allow_html=True)
