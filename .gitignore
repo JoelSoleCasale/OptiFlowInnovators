@@ -1,3 +1,5 @@
 **/__pycache__/**
 data/~$*
 **/catboost_info/**
+.venv/**
+.DS_Store
