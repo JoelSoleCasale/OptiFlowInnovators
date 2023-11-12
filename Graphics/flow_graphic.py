@@ -9,6 +9,7 @@ import seaborn as sns
 import datetime
 
 DATA_PATH = "data"
+GRAPHICS_PATH = "Graphics"
 
 '''
 # basic date features
@@ -56,6 +57,7 @@ for i in range(0, len(df_xi_velocity)):
 # Importing the pygame module
 import pygame
 import numpy as np
+import math
 from pygame.locals import *
  
 # Import randint method random module
@@ -75,7 +77,19 @@ window = pygame.display.set_mode((anchura, altura))
 # track the amount of time
 clock = pygame.time.Clock()
  
- 
+
+#load images
+hosp_img = pygame.image.load(GRAPHICS_PATH + '/hospital_logo.png')
+hosp_img = pygame.transform.scale(hosp_img, (50,50))
+storage_img = pygame.image.load(GRAPHICS_PATH + '/warehouse_logo.png')
+storage_img = pygame.transform.scale(storage_img, (75,75))
+products_imgs = [pygame.image.load(GRAPHICS_PATH + '/cleaning_logo.png'),
+                 pygame.image.load(GRAPHICS_PATH + '/vaccine_logo.png'),
+                 pygame.image.load(GRAPHICS_PATH + '/bandages_logo.png')]
+products_imgs[0] = pygame.transform.scale(products_imgs[0], (60,60))
+products_imgs[1] = pygame.transform.scale(products_imgs[1], (60,60))
+products_imgs[2] = pygame.transform.scale(products_imgs[2], (60,60))
+
 # Creating a boolean variable that
 # we will use to run the while loop
 run = True
@@ -87,52 +101,96 @@ colors_distrib = [(252,169,133), (251,182,209), (191,228,118)]
 colors_lines = [(253,202,162), (253,222,238), (224,243,176)]
 
 #Variables model
-list_compras_x_prod = [[10,20,30,40,50,60,70,80,90,100,110,120],
+list_compras_x_prod = np.array([[10,20,30,40,50,60,70,80,90,100,110,120],
                        [120,110,100,90,80,70,60,50,40,30,20,10],
-                       [70,80,90,100,110,120,10,20,30,40,50,60]]
+                       [70,80,90,100,110,120,10,20,30,40,50,60]])
+
+list_compras_x_prod = list_compras_x_prod*(40/max([sublist[-1] for sublist in list_compras_x_prod]))
+
 list_deltas_x_prod = [[1,1,1,1,1,1,1,1,1,1,1,1],
                       [1,0,1,0,1,0,1,0,1,0,1,0],
                       [0,1,0,1,0,1,0,1,0,1,0,1]]
+
+list_velocity_x_prod = [[5,5,5,5,5,5,5,5,5,5,5,5],
+                        [1,1,1,1,1,1,1,1,1,1,1,1],
+                        [3,3,3,3,3,3,3,3,3,3,3,3]]
+
+hospitals_ask_for_prod_in_month = [ [[1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0]],
+                                    [[0,0,1,0,1,0,1,0,0,0,0,1], [0,0,0,0,0,0,0,0,0,0,0,0], [1,0,1,0,0,0,0,0,0,0,1,0]],
+                                    [[1,0,1,0,1,0,1,0,1,0,1,0], [1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1]],
+                                    [[1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0]],
+                                    [[1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0]]]
 
 #Create time variables
 cont = 0
 day = 0
 month = 0
+limit_cont = 50
+cont2 = 0
+
+#variable to pause simulation
+pause = False
+
+def calcular_pos(origen, desti, cont):
+    cont = cont % float(limit_cont)
+    d = math.dist(origen, desti)
+    ret = origen + (desti-origen)/np.linalg.norm((desti-origen))*d*cont/float(limit_cont)
+    return ret
 
 # Creating an infinite loop
 # to run our game
-while run:
+while run and month < 12:
     
     # Watch for keyboard and mouse events.
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        elif event.type == pygame.KEYDOWN:
+            pause = not(pause)
 
     # Setting the framerate to 60fps
     clock.tick(60)
 
     # Update time variables
-    if(cont == 100):
+    if(cont == limit_cont):
         day += 1
         cont = 0
-        if(day == 31):
+        if(day == 30/3):    #acelerar simulación
             day = 0
             month += 1
+            
 
+    #Draw hospitals
     for i in range(0,5):
+        cont_intern = 0
         pygame.draw.line(window, (204,236,239), (700, pos_hosp[i]), (400,300), width = 15)
+        #Draw products from storage to hospitals
+        for j in range(0,3):
+            for k in range(0,list_velocity_x_prod[j][month]):
+                if(hospitals_ask_for_prod_in_month[i][j][month]):
+                    pygame.draw.circle(window, 0.9*np.array(colors_distrib[j]), 
+                                        calcular_pos(np.array([400,300]),
+                                            np.array([700,pos_hosp[i]]),
+                                            (cont+5*cont_intern))
+                                        , 5)
+                    cont_intern += 1
         pygame.draw.circle(window, (111,183,214), (700, pos_hosp[i]), 25)
+        window.blit(hosp_img, (700-25, pos_hosp[i]-25))
     
+
+    #Draw providers
     for i in range(0,3):
         pygame.draw.line(window, colors_lines[i], (100, pos_distrib[i]), (400,300), width = 15)
+        #Draw products from providers to storage
+        if(day == 0 and list_deltas_x_prod[i][month]):
+            pygame.draw.circle(window, 0.9*np.array(colors_distrib[i]), calcular_pos(np.array([100,pos_distrib[i]]),np.array([400,300]),cont), list_compras_x_prod[i][month])
         pygame.draw.circle(window, colors_distrib[i], (100, pos_distrib[i]), 40)
- 
+        window.blit(products_imgs[i], (100-30, pos_distrib[i]-30))
+
+
+    #Draw storage center
     pygame.draw.circle(window, (165,137,193), (400,300), 60)
-
-    for i in range(0,3):
-        if(day == 1):
-
-    
+    window.blit(storage_img, (400-75/2,300-75/2))
  
     # Updating the display surface
     pygame.display.update()
@@ -140,4 +198,5 @@ while run:
     # Filling the window with white color
     window.fill((255, 255, 255))
 
-    cont += 1
+    if(not pause): cont += 1
+
