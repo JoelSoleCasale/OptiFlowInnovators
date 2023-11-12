@@ -76,7 +76,7 @@ The goal is therefore to find cost-optimality whilst satisfying robustness and e
 In the unified demand scenario, we assume that all the hospitals group their orders for a given product in one order, with the referenced economical benefits that this supposes. We consider therefore each product separately and build a model to optimize the processes for each product.
 
 Given a specific product, we consider a unique provider and distribution center (as we are in a given region we can assume a certain locality). Our challenge is to optimize the costs given a certain environmental footprint and resilience score.
-We quantify the environmental impact as proportional to the number of orders, as referenced in and in the problem specification. This amounts to choosing when and how much to or- der given robust satisfaction of demand, fixed number of orders, and storage costs.
+We quantify the environmental impact as proportional to the number of orders, as referenced in and in the problem specification. This amounts to choosing when and how much to order given robust satisfaction of demand, fixed number of orders, and storage costs.
 
 The demand we obtain comes from a prediction for the purchase plan, from which we yield the amount of units needed for the coming year.
 
