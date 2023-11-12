@@ -12,6 +12,12 @@ In this project, we propose a mathematical model and implementation based on a c
 
 ## Challenge
 
+Healthcare supply chain optimization can contribute to solving some essential healthcare challenges in Spain.
+
+*Objectives*
+- Advance towards a predictive system that ensures supplies on site preventing stockouts
+- Unified purchases for several months of supply and between several units leads to less CO2 emissions due to transportation
+
 **MAIN GOAL**: Stablish a purchase plan for 2023
 
 *What else can we analyse?*
@@ -63,7 +69,7 @@ The goal is therefore to find cost-optimality whilst satisfying robustness and e
 
 <p align="center">
   <img width="300" height="225" src="./Paper/NTTStorableSupplyPlanner/WhatsApp Image 2023-11-12 at 01.28.21.jpeg">
-  <figcaption>Figure 1 - Image showing concatenation of 3 models (3 products), assuming that the distri- bution centers for each product are in the same location (graphical purposes).</figcaption>
+  <figcaption> Figure 1 - Image showing concatenation of 3 models (3 products), assuming that the distri- bution centers for each product are in the same location (graphical purposes).</figcaption>
 </p>
 
 ### Proposed solution
