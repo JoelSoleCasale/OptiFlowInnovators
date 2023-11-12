@@ -2,3 +2,4 @@
 data/~$*
 **/catboost_info/**
 .venv/**
+.DS_Store
