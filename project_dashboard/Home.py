@@ -1,5 +1,7 @@
 import streamlit as st
+from streamlit_card import card
 from PIL import Image
+
 
 st.set_page_config(
         layout="centered",
@@ -8,9 +10,14 @@ st.set_page_config(
 st.markdown("# NTT DATA Datathon FME-UPC 💻")
 st.sidebar.markdown("# Home 🎈")
 
-image = Image.open("LogoOptiFlow.jpeg")
+logo = Image.open("LogoOptiFlow.jpeg")
 
-st.subheader("Welcome to our project!")
+st.subheader("Optimizing Supply Chain orders for storable products under unified demand")
+st.info("Welcome to our project!", icon="⛩️")
+
+st.write(" ")
+st.write("---")
+st.write(" ")
 
 st.subheader("About Us")
 team_members = [
@@ -47,18 +54,20 @@ for member, col in list(zip(team_members, cols)):
         c.markdown(f"<u>Degrees</u>: {member['degree']}", unsafe_allow_html=True)
         c.write(f"Linkedin: [{member['name']}]({member['linkedin']})")
 
-st.write("---")
 
-st.image(image, use_column_width=True, width = 10)
-
+st.write(" ")
 st.write("---")
+st.write(" ")
+
+st.image(logo, use_column_width=True)
+
+st.write(" ")
+st.write("---")
+st.write(" ")
 
 st.subheader("Abstract")
 st.write(
-    "In this project, we propose a novel manner to optimize the robustness of a supply chain through stochastic modeling of its disruptions."
-)
-
-#st.info('Download ', icon="ℹ️")
+    "In this project, we propose a mathematical model and implementation based on a collaborative scheme designed to optimize the storage and distribution of medical products to hospitals given historical data.")
 
 with open("../Paper/documentation.pdf", "rb") as pdf_file:
     PDFbyte = pdf_file.read()
@@ -74,17 +83,32 @@ st.write("---")
 st.subheader("Github")
 st.info('See our [Github](https://github.com/JoelSoleCasale/JNA-Datathon2023) repository', icon="ℹ️")
 
+st.write(" ")
+st.write(" ")
+st.write("---")
+st.write(" ")
+st.write(" ")
+
+st.markdown("# Unified demand model 🌐")
+st.sidebar.markdown("# Unified demand model 🌐")
 
 
-st.markdown("# Centralized model 🌐")
-st.sidebar.markdown("# Centralized model 🌐")
+video_file = open('../Graphics/animation0.mp4', 'rb')
+video_bytes = video_file.read()
 
-video_html = """
-            <video controls width="600" autoplay="true" muted="true" loop="true">
-            <source 
-                    src="../Graphics/animation0.mp4" 
-                    type="video/mp4" />
-            </video>
-        """
+st.write("Simulation of the flow of products between providers and a central storage center that supplies all hospitals in a region:")
+st.video(video_bytes)
+st.caption("Generated with pygame")
 
-st.markdown(video_html, unsafe_allow_html=True)
+st.write(" ")
+st.write("---")
+st.write(" ")
+
+st.markdown("# Model results 📋")
+st.sidebar.markdown("# Model results 📋")
+
+st.write('We have used different values for', r'$\beta$', ' and ', r'$P_{max}$',' to observe the effects of different environmental and robustness restrictions on the optimal cost of storage.')
+heatmap = Image.open("heatmap.jpg")
+st.image(heatmap, use_column_width=True)
+st.caption("Heatmap of optimal costs in terms of "+r'$\beta$'+" and "+ r'$P_{max}$'+" for product 70130")
+st.write(' As expected, the more robust and the fewer orders allowed (i.e. the less environmental impact) lead to increased optimal costs. We also observe that it is significantly harder to have a lesser environmental impact than to be more robust.')
