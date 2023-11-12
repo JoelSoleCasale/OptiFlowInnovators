@@ -17,20 +17,24 @@ from random import randint
 DATA_PATH = "data"
 GRAPHICS_PATH = "Graphics"
  
+
 # Initiate pygame and give permission
 # to use pygame's functionality
 pygame.init()
  
+
 # Create a display surface object
 # of specific dimension
 anchura = 800
 altura = 600
 window = pygame.display.set_mode((anchura, altura))
  
+
 # Creating a new clock object to
 # Track the amount of time
 clock = pygame.time.Clock()
  
+
 # Load images
 hosp_img = pygame.image.load(GRAPHICS_PATH + '/hospital_logo.png')
 hosp_img = pygame.transform.scale(hosp_img, (50,50))
@@ -43,57 +47,46 @@ products_imgs[0] = pygame.transform.scale(products_imgs[0], (60,60))
 products_imgs[1] = pygame.transform.scale(products_imgs[1], (60,60))
 products_imgs[2] = pygame.transform.scale(products_imgs[2], (60,60))
 
+
 # Creating a boolean variable that
 # we will use to run the while loop
 run = True
  
+
 # Constants positon / colors
 pos_hosp = np.linspace(100,500,5)
 pos_distrib = np.linspace(100,500,3)
 colors_distrib = [(252,169,133), (251,182,209), (191,228,118)]
 colors_lines = [(253,202,162), (253,222,238), (224,243,176)]
 
+
 #Load model parameters
 df_70130 = pd.read_csv(DATA_PATH + "/jan_df_70130.csv")
-print(df_70130)
 
-list_compras_x_prod = np.array([[0,0,0,0,0,0,0,0,0,0,0,0],
-                       [800,800,800,800,800,800,800,800,800,800,800,800],
-                       [0,0,0,0,0,0,0,0,0,0,0,0]])
+list_compras_x_prod = np.zeros([3,12])
 list_compras_x_prod[2] = df_70130["p"].to_numpy()
+list_compras_x_prod[1] = np.full(12,800)
 list_compras_x_prod[0] = np.flip(list_compras_x_prod[2])
-
-
-
 list_compras_x_prod = list_compras_x_prod*(40/max([max(sublist) for sublist in list_compras_x_prod]))
 
-
-list_deltas_x_prod = np.array([[0,0,0,0,0,0,0,0,0,0,0,0],
-                      [1,1,1,1,1,1,1,1,1,1,1,1],
-                      [0,0,0,0,0,0,0,0,0,0,0,0]])
+list_deltas_x_prod = np.zeros([3,12])
 list_deltas_x_prod[2] = df_70130["delta"].to_numpy()
 for i in range(0,len(list_deltas_x_prod[2])):
     list_deltas_x_prod[2][i] = not(list_deltas_x_prod[2][i])
+list_deltas_x_prod[1] = np.full(12,1)
 list_deltas_x_prod[0] = np.flip(list_deltas_x_prod[2])
 
-
-list_velocity_x_prod = np.array([[0,0,0,0,0,0,0,0,0,0,0,0],
-                        [300,300,300,300,300,300,300,300,300,300,300,300],
-                        [0,0,0,0,0,0,0,0,0,0,0,0]])
+list_velocity_x_prod = np.zeros([3,12])
 list_velocity_x_prod[2] = df_70130["v"].to_numpy()
-list_velocity_x_prod = (list_velocity_x_prod*(10/max([max(sublist) for sublist in list_velocity_x_prod]))).astype(int)
+list_velocity_x_prod[1] = np.full(12,300)
 list_velocity_x_prod[0] = np.flip(list_velocity_x_prod[2])
-
+list_velocity_x_prod = (list_velocity_x_prod*(10/max([max(sublist) for sublist in list_velocity_x_prod]))).astype(int)
 
 hospitals_ask_for_prod_in_month = np.array([    [[1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0]],
                                                 [[0,0,1,0,1,0,1,0,0,0,0,1], [0,0,0,0,0,0,0,0,0,0,0,0], [1,0,1,0,0,0,0,0,0,0,1,0]],
                                                 [[1,0,1,0,1,0,1,0,1,0,1,0], [1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1]],
                                                 [[1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0]],
                                                 [[1,1,1,1,1,1,1,1,1,1,1,1], [0,1,0,1,0,1,0,1,0,1,0,1], [1,0,1,0,1,0,1,0,1,0,1,0]]])
-
-
-
-
 
 
 #Create time variables
@@ -106,6 +99,7 @@ cont2 = 0
 #variable to pause simulation
 pause = False
 
+#Compute position of product from position of origin, position of destination and cont
 def calcular_pos(origen, desti, cont):
     cont = cont % float(limit_cont)
     d = math.dist(origen, desti)
@@ -116,7 +110,6 @@ def calcular_pos(origen, desti, cont):
 # Creating an infinite loop
 # to run our game
 while run and month < 12:
-    
     # Watch for keyboard and mouse events.
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
