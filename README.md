@@ -62,7 +62,7 @@ Supply chain robustness is of paramount importance for businesses, as it not onl
 The goal is therefore to find cost-optimality whilst satisfying robustness and environmental constraints. We suggest a unified demand approach to tackle the problem, that is an agreement reached by an array of medical institutions to combine the demand for medical products in one single order to reduce cost, followed by a mathematical model and further implementation to solve the problem in this setting. For simplicity, we consider a time granularity of months.
 
 <p align="center">
-  <img width="300" height="200" src="./Paper/NTTStorableSupplyPlanner/WhatsApp Image 2023-11-12 at 01.28.21.jpeg">
+  <img width="300" height="225" src="./Paper/NTTStorableSupplyPlanner/WhatsApp Image 2023-11-12 at 01.28.21.jpeg">
   <figcaption>Figure 1 - Image showing concatenation of 3 models (3 products), assuming that the distri- bution centers for each product are in the same location (graphical purposes).</figcaption>
 </p>
 
