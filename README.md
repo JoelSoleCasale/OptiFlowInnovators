@@ -84,7 +84,7 @@ The demand we obtain comes from a prediction for the purchase plan, from which w
 
 To replicate our training and obtain the metrics reported in the paper, execute the training script in `src/train.py`.
 
-For this, generate the virtual environment and install the necessary dependencies using [poetry]():
+For this, generate the virtual environment and install the necessary dependencies using [poetry](https://python-poetry.org/docs/):
 
 ```bash
 poetry install
@@ -97,12 +97,13 @@ cd src
 poetry run python train.py --data_path  ../data --model boltzmann
 ```
 
-
-
-
 You should obtain the following results (as reported in the paper):
+
+<div align=center>
 
 | Model    | Tweedie | Expense MAPE |
 |----------|---------|--------------|
 | Ensemble | 0.70894 | 0.07146      |
 | TFT      | 0.16871 | 0.2293       |
+
+</div>
