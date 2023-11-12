@@ -58,6 +58,7 @@ for i in range(0, len(df_xi_velocity)):
 import pygame
 import numpy as np
 import math
+import imageio
 from pygame.locals import *
  
 # Import randint method random module
@@ -137,6 +138,8 @@ def calcular_pos(origen, desti, cont):
     ret = origen + (desti-origen)/np.linalg.norm((desti-origen))*d*cont/float(limit_cont)
     return ret
 
+frames = []
+
 # Creating an infinite loop
 # to run our game
 while run and month < 12:
@@ -194,9 +197,16 @@ while run and month < 12:
  
     # Updating the display surface
     pygame.display.update()
+    
+    if(cont % 3 == 0):
+        pygame.image.save(window, GRAPHICS_PATH+"/frame.jpeg")
+        frames.append(imageio.imread(GRAPHICS_PATH+"/frame.jpeg"))
  
     # Filling the window with white color
     window.fill((255, 255, 255))
 
     if(not pause): cont += 1
+    
+
+imageio.mimsave(GRAPHICS_PATH+"/animation.gif", frames)
 
